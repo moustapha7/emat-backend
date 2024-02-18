@@ -1,0 +1,13 @@
+package com.emat.ematbackend;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class EmatBackendApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(EmatBackendApplication.class, args);
+	}
+
+}
