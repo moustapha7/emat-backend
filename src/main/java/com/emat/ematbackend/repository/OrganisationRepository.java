@@ -10,8 +10,6 @@ public interface OrganisationRepository extends JpaRepository<Organisation, Long
 
     Organisation findByEntite(String entite);
 
-   // Organisation findOrganisationById(long id);
-
     boolean existsByEntite(String entite);
 
 

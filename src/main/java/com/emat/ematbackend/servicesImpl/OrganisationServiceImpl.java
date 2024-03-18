@@ -6,7 +6,9 @@ import com.emat.ematbackend.exception.ResourceNotFoundException;
 import com.emat.ematbackend.mappers.OrganisationMapper;
 import com.emat.ematbackend.models.Organisation;
 import com.emat.ematbackend.repository.OrganisationRepository;
+import com.emat.ematbackend.repository.R5UserOrganisationRepository;
 import com.emat.ematbackend.services.OrganisationService;
+import com.emat.ematbackend.services.R5UserOrganisationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,9 @@ public class OrganisationServiceImpl implements OrganisationService {
 
     @Autowired
     private OrganisationMapper dtoMapper;
+
+    @Autowired
+    private R5UserOrganisationRepository r5UserOrganisationRepository;
 
     @Autowired
     public OrganisationServiceImpl(ModelMapper modelMapper) {
@@ -119,10 +124,34 @@ public class OrganisationServiceImpl implements OrganisationService {
     }
 
     @Override
+    public String findDescriptionByEntite(String entite) throws ResourceNotFoundException {
+
+        Optional<Organisation> organisationOptional = Optional.ofNullable(organisationRepository.findByEntite(entite));
+        if (organisationOptional.isPresent()){
+            Organisation organisation1 = organisationOptional.get();
+            String description = organisation1.getDescription();
+            return description;
+        } else {
+            throw new ResourceNotFoundException("Error: L'entité n'existe pas");
+        }
+    }
+
+    @Override
+    public  boolean existsByUogorg(String uogorg){
+        return r5UserOrganisationRepository.existsByUogorg(uogorg);
+    }
+
+    @Override
     public void deleteOrganisation(Long id) throws ResourceNotFoundException {
         Optional<Organisation> organisation = organisationRepository.findById(id);
 
         if(organisation.isPresent()){
+            Organisation organisation1= organisation.get();
+            String entite = organisation1.getEntite();
+
+            if(this.existsByUogorg(entite)){
+                throw new ResourceNotFoundException("Impossible de suppirmer l'entité car elle est ratachée par un utilisateur");
+            }
             organisationRepository.deleteById(id);
         }
     }

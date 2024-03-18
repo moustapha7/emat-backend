@@ -20,6 +20,8 @@ public class SignupRequest {
 
         private Set<String> role;
 
+      //  private String groupeUser;
+
         @NotBlank
         @Size(min = 6, max = 40)
         private String password;
@@ -55,4 +57,12 @@ public class SignupRequest {
         public void setRole(Set<String> role) {
             this.role = role;
         }
+
+/*    public String getGroupeUser() {
+        return groupeUser;
+    }
+
+    public void setGroupeUser(String groupeUser) {
+        this.groupeUser = groupeUser;
+    }*/
 }

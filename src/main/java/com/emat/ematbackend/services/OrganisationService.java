@@ -23,4 +23,8 @@ public interface OrganisationService {
 
     void deleteOrganisation(Long id) throws ResourceNotFoundException;
 
+    String findDescriptionByEntite(String entite) throws ResourceNotFoundException;
+
+    boolean existsByUogorg(String uog);
+
 }
